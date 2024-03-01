@@ -22,6 +22,10 @@ const apii = "http://localhost:5678/api/works" ;
       console.log(varr[0].category.name);
       console.log(varr[3].category.name); 
 
+      console.log(varr[0].categoryId); 
+      console.log(varr[3].categoryId); 
+
+
 
 
 
@@ -42,8 +46,9 @@ const apii = "http://localhost:5678/api/works" ;
 
 
 // filter function to filter with what we need. 
-// async function filt (obj) {
+// les id = name they are together so we are going to filter by id or we can use the name depending on what the button while send back to us 
 
-
-// return ; 
+// async function filt (obj,num) {
+//     const filteredItems = obj.filter( x  => x.categoryId === num); 
+// return filteredItems ; 
 // }
