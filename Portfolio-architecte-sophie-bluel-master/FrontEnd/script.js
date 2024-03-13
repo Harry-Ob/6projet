@@ -3,24 +3,52 @@ const apii = "http://localhost:5678/api/works" ;
 
 const apii_category = api + "categories" ; // je recup mes categories et cree mes bouttons avec buttons et  ce que ca implique 
 const apii_works = api + "works";
-// const  rep = await fetch (apii) ; 
-// revoir await et asynch utilization 
-//  Look at fech methode to know what arguments it takes
-// console.log(rep.status) ; 
 
 // rep.response => shows the body 
 // rep.status => shows the code returned by fonction 
 
 start(); 
+build_work();
+build_filter();
+//  add_button(); => add_category/ event 
+filter_button(); 
 
+
+(async () => {
+  try {
+    const response = await fetch(apii_category);   
+    console.log('HTTP status code:', response.status);
+    // I need to wait for the result of the promise to do something with it otherwise my object isnt really defined 
+    varr = await response.json() ;
+    buffer = [{ id:0, name: 'Tous'}] ;
+    buffer = buffer.concat(varr); 
+    
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+})();
+
+function build_filter(){
+  // createDiv 
+  // add class to div
+  // ajouter la class au bouton et ensuite ajouter le bouton a la div 
+  // le faire 4 fois car nbr boutons 
+  
+  add_button(); 
+  add2page();  
+}
+
+function add_button(){
+  add_category(); 
+}
  async function start() {
   try {
     const response = await fetch(apii);
-    console.log('HTTP status code:', response.status);
+    // console.log('HTTP status code:', response.status);
     // I need to wait for the result of the promise to do something with it otherwise my object isnt really defined 
     varr = await response.json();
-    console.log(varr);
-    console.log(varr.length);
+    // console.log(varr);
+    // console.log(varr.length);
     // console.log(varr[0].id);
     // console.log(varr[0].title)
 
@@ -40,19 +68,21 @@ start();
     // addAttributes(,varr);
     //  dans notre cas ici on sait que c'est que pour les img qu'on met  des choses 
     // ensuite pour mettre une figcaption 
-    DOC = null;
+    // DOC = null;
+    
     tab = ["figure", "img", "figcaption"] ;
-    tab2=[]  
+    // tab2=[]  
     for (let i = 0; i < varr.length; i++) {
       // DOC = buildElement(tab[i], varr[i].imageUrl, varr[i].title);
-      DOC = buildElement(tab,varr[i])
-      console.log(DOC);
+      // DOC = 
+      buildElement(tab,varr[i])
+      // console.log(DOC);
       // array1.setAttributes(array1.querySelector("img"),{src: x.imagegUrl, alt: x.title} ; 
       // DOC.setAttribute(DOC.querySelector("img"),{src: varr[i].imagegUrl, alt: varr[i].title}) ; 
     }
-    console.log(DOC);
-    mott = "bonjour";
-    console.log(mott.length);
+    // console.log(DOC);
+    // mott = "bonjour";
+    // console.log(mott.length);
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -61,8 +91,14 @@ start();
 // Function that build one element at a time
 // si je suis un figure je met un ID =>  
 // img => src et alt
+// pas facilement maintenable 
+//  a redecouper  
+// trop generique une fonction pour ce que tu veux faire 
+DOC = null 
+DOC = document.getElementById(maison); 
 function buildElement(array,array2){
-  // rep = document.getElementById ; 
+  //  faire du dure et pas comme ca 
+  //  tu peut changer certaines chose mais closer to what u wanna build
   var galleryDiv = document.querySelector('#portfolio .gallery');
   var figure = document.createElement(array[0]);
   var imge = document.createElement(array[0]);
@@ -82,8 +118,6 @@ function buildElement(array,array2){
       figure.append(imge,chose);
       galleryDiv.appendChild(figure);
     }
-    // galleryDiv.appendChild(figure);
-    console.log(galleryDiv); 
   }
    
   //  console.log(array); 
@@ -114,25 +148,15 @@ return chose ; }
 //  img => src et alt 
 function addAttributes(array1,x){
   array1.setAttributes(array1.querySelector("img"),{src: x.imagegUrl, alt: x.title})
-  // array1.querySelector("img"),
 }
 
 function addAttributesImg(array1,x){
-  // console.log(array1); 
-  // console.log(x.imageUrl); 
-  // console.log(x.title);
   array1.setAttribute("src",x.imageUrl); 
   array1.setAttribute("alt",x.title);
-  // array1.setAttributes(array1.querySelector("img"),{src: x.imagegUrl, alt: x.title})
-// return array1 ; 
 }
 
 function addAttributesFig(array1,x){
   array1.setAttribute("id",x.categoryId);
-  // console.log(array1); 
-  // console.log(x.categoryId);
-  // array1.setAttributes(array1.querySelector("figure"),{id: x.categoryId})
-// return array1 ; 
 }
 
 function add2page(){
@@ -149,10 +173,10 @@ function add2page(){
 //       varr = await response.json() ;
 //       console.log("Another version");
 //       console.log(varr);
-//       temp = [{ id:0, name: 'Tous'}] ;
-//       temp = temp.concat(varr); 
+//       buffer = [{ id:0, name: 'Tous'}] ;
+//       buffer = buffer.concat(varr); 
 //       console.log(varr); 
-//       console.log(temp); 
+//       console.log(buffer); 
 
 
 // // cree des elements html / createElement ou innerElement / AppendElement / addEventListeners 
