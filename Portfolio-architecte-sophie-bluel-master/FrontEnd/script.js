@@ -10,8 +10,22 @@ let work_done = 0 ;
 const gallery_div = document.querySelector('#portfolio .gallery');
 
 
-start(); 
+start();
+// test();
+// log_out();  
 
+function test() {
+    window.localStorage.length > 0 ? console.log("afficher admin element") : console.log("Ici c'est vide donc tu viens d'arriver");
+    window.localStorage.removeItem("user_token"); 
+    window.localStorage.removeItem("user_id");
+    window.location.href="login.html" 
+} 
+
+function log_out(){
+  test(); 
+  console.log("everything was done according to plan");
+
+}
 
 
 // all function and the code 
@@ -19,7 +33,7 @@ start();
 
  async function start() {
   try {
-    const result_work = await fetch(apii);
+    const result_work = await fetch(apii_works);
     temp_work = await result_work.json();
     const result_category = await fetch(apii_category);
     temp_category = await result_category.json();
@@ -82,8 +96,17 @@ function build_filter(all_filter_elements){
 
   }
   // ici a changer => nom de var a trouver et mettre ici 
-   tes = document.getElementById("portfolio");
-   test = tes.querySelector("h2");
-   test.insertAdjacentElement('afterend',my_div);
+   portfolio_element = document.getElementById("portfolio");
+   h2_element = portfolio_element.querySelector("h2");
+   h2_element.insertAdjacentElement('afterend',my_div);
 
 }
+
+
+// here because u left the other page with a redirection 
+function log_out (){
+// empty local sto 
+// rediriger vers login ou rester la ou tu es et supp elem admin 
+// 
+}
+ 
