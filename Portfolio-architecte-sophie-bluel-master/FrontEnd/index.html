@@ -19,16 +19,22 @@
 <body>	
 <header>
 	<!--  est ce que je peut placer qqchose ici ?  -->
-	<div> <p> jajaj</p> </div>
-	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+	<div class="header-admin admin-element"> 
+		<span class="elemt"><i class="fa-regular fa-pen-to-square admin-element"></i> Mode edition </span> 
+	</div>
+	<div class="header"> 
+		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
-			<li>login</li> <!-- login <=> logout -->
+			<li id="log_element">login</li> <!-- login <=> logout -->
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
+
+	</div>
+	
 </header>
 <main>
 	<section id="introduction">
@@ -43,8 +49,14 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<div>
-			<h2>Mes Projets</h2>
+		<div class="portfolio-container">
+
+			<div class="pro">
+				<h2>Mes Projets </h2>
+				<span><i class="fa-regular fa-pen-to-square admin-element elemt+"></i></span>
+			</div>
+			
+			
 			<!-- logo + txt  -->
 		</div>
 		<!-- section pour les parties dont tu as besoins et referencement attention  -->
