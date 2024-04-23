@@ -9,7 +9,8 @@ let work_done = 0;
 
 const gallery_div = document.querySelector('#portfolio .gallery');
 const log_element = document.getElementById("log_element");
-
+const div_element = document.getElementById("pro");
+let elem_active = [] ; 
 
 start();
 // test() ; 
@@ -139,10 +140,23 @@ function build_element(x) {
 
 function button_filter(element) {
   console.log(element.target.id);
+  console.log(element.target.innerHTML);
+  varr = element.target ; 
+  if( elem_active.length > 0) 
+    f1() ;
+  varr.style = "background-color:#1D6154; color:white";
+  // elem_active.length > 0 ? f1() : varr.style = "background-color:#1D6154; color:white ";; 
+  // varr.style = "background-color:#1D6154; color:white ";
+  elem_active.push(varr); 
+  console.log(varr);
   element.target.id == 0 ? build_work(all_work_elements) : filter_work(element.target.id); //passer un arg avec 
 };
 
-
+function f1(){
+  x = elem_active.pop() ; 
+  // console.log(x);
+  x.style = "" ;
+}
 function filter_work(id) {
   build_work(all_work_elements.filter(item => item.categoryId == id));
 }
@@ -161,11 +175,13 @@ function build_filter(all_filter_elements) {
   }
   // ici a changer => nom de var a trouver et mettre ici 
   portfolio_element = document.getElementById("portfolio");
+  // portfolio_element.insertAdjacentElement('afterend',my_div);
   // h2_element = portfolio_element.querySelector("h2");
   // h2_element.insertAdjacentElement('afterend', my_div);
-  span_element = portfolio_element.querySelector("span");
-  span_element.insertAdjacentElement('afterend', my_div);
-
+  // span_element = portfolio_element.querySelector("span");
+  // span_element.insertAdjacentElement('afterend', my_div);
+  // div_element = portfolio_element.querySelector("div") ;
+  div_element.insertAdjacentElement('afterend', my_div);
 }
 
 
