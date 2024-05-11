@@ -7,38 +7,26 @@ const err_style =  "2px solid #FF0000"; // to modify
 const msg_err="Votre mot de passe ou votre email est incorrect"
 const api = "http://localhost:5678/api/users/login" ; 
 const txt = "logout";
-// soucis avec le regex de text mais on a compris ce qu'il nous faut
+
  const verif_email = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/ ; 
  const user = {};
-//  const youser = {
-//  email:"sophie.bluel@test.tld",
-//  password:"S0phie" }
 
 form_verification() ;
 
-// localStorage.setItem => 
-// localStorage.getItem => 
-// localStorage.removeItem = > 
-// function free_local_storage(){} 
+
 function error (){
     email.style.border = err_style ; 
     password.style.border = err_style;                                 
-    errr.innerHTML=msg_err ; 
-    // mess d'err precis where the err was found 
-    // votre mot de passe ou votre identifiant est incorrect, 
-    
+    errr.innerHTML=msg_err ;    
 }
-// ma page d'accueil verifie si j'ai qqchose dans mon localStorage !== null => token existant donc mode admin sinon normal 
+
 function form_verification(){
     form.addEventListener("submit", 
     (event)=> {
     event.preventDefault() ;
     user.email = email.value; 
     user.password = password.value ; 
-    // console.log(verif_email.test(email.value)); 
     password.value == "" || !verif_email.test(email.value) ? error2() : login(user) ;
-    // console.log("mdp:",password.value,"email:",email.value) ;
-
 
 }); 
 }
@@ -47,11 +35,10 @@ function error2 () {
     error();
     
 }
-// look more info into it 
+
 
 function login (user){
-    // user.email = "sophie.bluel@test.tld";
-    // user.password ="S0phie"; 
+
     const youser= JSON.stringify(user);
     console.log(user);
     console.log(youser);
@@ -85,7 +72,6 @@ function login (user){
 })
     .catch(err => {
         console.log(err);
-        // console.log(err)
     })
 
 }
