@@ -18,7 +18,6 @@
 		integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-
 <body>
 	<header>
 		<!--  est ce que je peut placer qqchose ici ?  -->
@@ -38,7 +37,6 @@
 				</ul>
 			</nav>
 		</div>
-
 	</header>
 	<main>
 		<section id="introduction">
@@ -59,24 +57,15 @@
 		<section id="portfolio">
 			<div class="portfolio-container">
 				<div class="pro" id="pro">
-					<!-- <div class="tess"> -->
 					<h2>Mes Projets </h2>
-					<!-- <div></div> mettre mes elements du dessous dans la meme chose ou simuler la meme action sur les deux--> 
 					<div class="pro admin-element" id="open_modale">
-						<!-- admin-element en bas -->
 						<span><i class="fa-regular fa-pen-to-square  elemt+"></i></span>
 						<p> modifier </p>
-
 					</div>
-					<!-- <span><i class="fa-regular fa-pen-to-square admin-element elemt+"></i></span>
-					<p> modifier </p> -->
-
-					<!-- </div> -->
 				</div>
 			</div>
 			<!-- section pour les parties dont tu as besoins et referencement attention  -->
 			<div id="modale-container">
-
 				<section class="modale-show" id="modale-show">
 					<div class="modale-header">
 						<h2> Galerie photo</h2>
@@ -84,42 +73,35 @@
 						<span id="x-button"><i class="fa-solid fa-xmark"></i></span>
 					</div>
 					<div class="modale-main" id="modale-show-main">
-
 					</div>
+					<div id="modale-hr"></div>
 					<div class="modale-end">
-						<button id="valider-button"> coucou </button>
+						<button  class="submit-button" id="valider-button"> Ajouter une photo </button>
 					</div>
 				</section>
-
 				<section class="modale-add" id="modale-add">
 					<div class="modale-header">
 						<span id="previous-modale" class="arrow-left"><i class="fa-solid fa-arrow-left"></i></span>
-
-						<span id="xx-button"><i class="fa-solid fa-xmark"></i></span>
+<!-- fa-lg -->
+						<span id="xx-button"><i class="fa-solid fa-xmark "></i></span>
+						<h2>Ajout photo</h2>
 					</div>
-					<h2>Ajout photo</h2>
 					<div class="modale-container-img">
 						<!-- ici on place le +  -->
 						<button class="modale-button-add"> Ajouter une photo </button>
 						<p>jpg,png : 4mo max</p>
-					</div>
-					<!-- a mieux placer -->
-					<!-- class="end-modale" a voir  -->
-					<div class="modale-end">
-						<label for="title">Titre</label>
-						<input type="text" name="title" id="title" required>
-						<label for="#">Catégorie</label>
-						<select id="categoryInput" name="category" required>
-							<optgroup label="Swedish Cars">
-								<option value="volvo">Volvo</option>
-								<option value="saab">Saab</option>
-							</optgroup>
-							<optgroup label="German Cars">
-								<option value="mercedes">Mercedes</option>
-								<option value="audi">Audi</option>
-							</optgroup>
-						</select>
-						<button type="submit" class="modale-button-submit"> Valider</button>
+						<form  method="post" id="input-form">
+							<input type="file" id="input-file" name="img" required>
+							<img id="input-img" src="#" alt="Aperçu image">
+							<label for="title" id="title">Titre</label>
+							<input type="text" name="title" id="input-title" required>
+							<label for="#">Catégorie</label>
+							<select id="input-category" name="category" required>
+								<option value="" selected disabled></option>
+							</select>
+							<div id="modale-hr"></div>
+							<button type="submit" class="submit-button-not-valid"> Valider</button>
+						</form>
 					</div>
 				</section>
 			</div>
@@ -140,7 +122,6 @@
 			</form>
 		</section>
 	</main>
-
 	<footer>
 		<nav>
 			<ul>
