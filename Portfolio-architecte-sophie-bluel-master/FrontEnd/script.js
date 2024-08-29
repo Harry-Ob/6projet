@@ -57,8 +57,10 @@ function admin_elem_on() {
   if (log_element.innerHTML == "login") {
     if (window.localStorage.length > 0) {
       log_element.innerHTML = "logout";
-
-      log_element.addEventListener("click", log_out());
+      log_element.addEventListener("click", (event)=> {
+        event.preventDefault();
+        log_out(); 
+      });
     }
 
   } else {
@@ -72,7 +74,6 @@ function admin_elem_on() {
 
 //  soucis dans cette fonction a gerer 
 function log_() {
-  console.log(log_element.innerHTML);
   tss =  log_element.innerHTML ;
   tss == "login" ? log_in() : log_out() ;
 }
@@ -82,12 +83,10 @@ function log_in() {
 }
 
 function log_out() {
-  // console.log("ici c la street");
   log_element.innerHTML = "login";
   window.localStorage.removeItem("user_token");
   window.localStorage.removeItem("user_id");
   window.location.href = "login.html";
-
   log_element.innerHTML = "logout";
 
 }
@@ -141,8 +140,6 @@ function build_work(work) {
   }
   
   gallery_div.append(...result);// look for the spread operator 
-  // build_modale_gallery(gallery_div);
-  // work = result;
   work_done = 1;
 }
 
