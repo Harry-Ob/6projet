@@ -14,6 +14,7 @@ const url_database = "http://localhost:5678/api/works";
 const input_file = document.getElementById("input-file");
 const input_title = document.getElementById("input-title");
 const input_category = document.getElementById("input-category");
+const max_file_size = 4 *1024 * 1024; 
 // a utiliser pour avoir notre preview de l'img
 const input_img = document.getElementById("input-img");
 const input_img_data = {
@@ -24,10 +25,10 @@ const input_img_data = {
     user_id: 0
 };
 const form_data = new FormData(); 
+// let file;
 
 // main fonction usage 
 modale();
-
 
 
 // function declaration 
@@ -37,27 +38,48 @@ function modale() {
     next_modale();
     previous_modale();
     form_preview();
+    form_complete1(); 
 }
 
 function form_complete(img) {
-
+    
     const form_add = document.getElementById("input-form");
     form_add.addEventListener("submit",elem => {
         elem.preventDefault();
-        form_data.append("img",img);
-        form_data.append("categoryId",input_img_data.category_id);
+        form_data.append("image",input_img_data.img);
+        form_data.append("category",parseInt(input_img_data.category_id));
+        form_data.append("title",input_title.value);
+        console.log(input_img_data,"eeh");
+        add_to_database(form_data);
         
     });
-    add_to_database(form_data);
+    
+    // start2();
     // when form is complete je lance add_to_database()
+}
+
+function form_complete1(){
+    console.log(input_img_data);
+    if(input_img_data.img){
+        debbug
+        const form_add = document.getElementById("input-form");
+        form_add.addEventListener("submit",elem => {
+            elem.preventDefault();
+            form_data.append("img",input_img_data.img);
+            form_data.append("title",input_title.value);
+            form_data.append("categoryId",parseInt(input_img_data.category_id));
+            
+            add_to_database(form_data);
+    });
+    }
 }
 
 
 
 function form_preview() {
-    // img preview 
-    let file;
+
     input_file.addEventListener("change", () => {
+        let file ; 
         file = input_file.files[0];
         // if file is good read it 
         if (file) {
@@ -67,22 +89,34 @@ function form_preview() {
             };
             reader.readAsDataURL(file);
             f_name = file.name  ; 
-            f_name = f_name.slice(0,f_name.lastIndexOf('.')) ; 
+            f_name = f_name.slice(0,f_name.lastIndexOf('.')) ;
+            f_ext = file.name.slice((f_name.lastIndexOf(".")+1) ,file.name.length).toLowerCase();
             input_title.value = f_name ; 
-            if ( input_img_data.category_id != "" && input_title.value != "" ){
+            // when u know about the err do u tell something to the user ? 
+            if ( input_img_data.category_id != "" && input_title.value != "" && ( f_ext == "png" || f_ext == "jpg") && file.size <= max_file_size ){
                 document.getElementById("submit-form-add-img").className = "submit-button" ; 
-                form_complete(file);
-            }
+                // form_complete(file);
+                // alert(petit truc a afficher si soucis) 
+                //  a deplacer 
+            }else
+                console.log("erreur fichier non accepter"); 
+
+            input_img_data.img = file ; 
         }
     });
     input_category.addEventListener("change", (elem) => {
+        elem.preventDefault();
         // console.log(elem.target);
         input_img_data.category_id = elem.target.value;
         if ( input_img_data.category_id != "" && input_title.value != "" ){
             document.getElementById("submit-form-add-img").className = "submit-button" ; 
-            form_complete(file);
+            // form_complete(file);
+            // a deplacer car tu en place trop. 
         }
     });
+    form_complete(input_img_data);
+    
+
 
     
     
@@ -116,18 +150,51 @@ function build_trash_icon_element() {
         parent_elem = parent_elem.parentElement;
         img = parent_elem.querySelector("img");
         remove_from_database(img.id);
+        
     });
     //  tu trouves ton id pour delete avec ton queryselector du parent de ton elem 
     span_element.append(i_element);
     return span_element;
 }
 
+function show_modale(){
+    modale_container_element.style = "display:block";
+    modale_show_element.style = "display:flex";
+}
 
 function add_to_database(formdata) {
+
     // id_img +=1; rajouter au bon endroit 
     
-    return console.log("DONE-add");
-exit 
+    // return console.log("DONE-add");
+    console.log(formdata);  
+    const user_token = window.localStorage.getItem("user_token");
+    const url_database_add = url_database;
+    const arg_author = "Bearer " + user_token; 
+    const request = {
+        method: "POST",
+        body: formdata,
+        headers: {
+            authorization: arg_author,
+            // "Content-type": "multipart/form-data",
+        },
+        // mode: "cors",
+        // credential: "same-origin",
+    }
+    // const formd = new FormData(formdata);
+    fetch(url_database_add, request,)
+    .then((response) => {
+        if(!response.ok){throw new Error("Erreur, fichier non envoyer");}
+        return response.json(); 
+    })
+    // ici le fichier est bien envoyer donc je dois relancer la fonction pour build la bd
+    // dans la page mais aussi dans ma modale.
+    .then((data) => {
+        console.log("Ta var est ici: ", data) ; 
+
+    })
+    .catch((error)=> {console.error("Erreur:",error)}); 
+
 }
 
 function remove_from_database(id) {
@@ -139,7 +206,7 @@ function remove_from_database(id) {
     // et ta modale 
 
     // id_img -=1; a mettre au bon endroit 
-    return console.log("DONE-delete");
+    // return console.log("DONE-delete");
     const user_token = window.localStorage.getItem("user_token");
     const url_database_delete = url_database + "/" + id;
     const arg_author = "Bearer " + user_token;
@@ -156,16 +223,22 @@ function remove_from_database(id) {
     // verifier quoi faire une fois que l'image est supp de la BD
     // regarder quel fonction appeler pour tout refaire 
     // build_work et build_modale_visuals 
-    fetch(url_database_delete, request,).then(start()).then().catch();
+    fetch(url_database_delete, request,)
+    .then(() => {
+        modale(); 
+        console.log("here we are");
+    })
+    .then()
+    .catch((error)=> {console.error("Erreur:",error)}); 
 
 }
 function add_span_modale_gallery(elem, span) {
     elem.insertAdjacentElement('beforebegin', span);
 }
 
-function modale_gallery() {
-    build_modale_gallery();
-}
+// function modale_gallery() {
+//     build_modale_gallery();
+// }
 
 //  look why it works like that and not with named function in this case 
 function open_modale() {
