@@ -7,6 +7,7 @@ let all_work_elements;
 let all_categories;
 let work_done = 0;
 let work ; 
+let category_done = 0;
 
 const gallery_div = document.querySelector('#portfolio .gallery');
 const log_element = document.getElementById("log_element");
@@ -46,7 +47,6 @@ function admin_elem_off(){
   Array.from(admin_elements).forEach(elements => display_off(elements));
 
 }
-// enlever la partit avec DOMCONTENTLOADED 
 function admin_elem_on() {
   Array.from(admin_elements).forEach(elements => display_on(elements));
   document.addEventListener("DOMContentLoaded",function () {
@@ -105,8 +105,12 @@ async function start() {
     buffer_category = [{ id: 0, name: 'Tous' }];
     buffer_category = buffer_category.concat(temp_category);
     // new function for category into modal 
-    category_modale(temp_category);
-    all_categories = buffer_category;
+    if (category_done == 0){
+      category_modale(temp_category);
+      all_categories = buffer_category;
+      category_done=1;
+    }
+
     all_work_elements = temp_work;
     build_work(temp_work);
     if ( !connexion() )
@@ -116,6 +120,7 @@ async function start() {
     console.error('Error fetching data:', error);
   }
 }
+
 
 
 function build_work(work) {
@@ -149,20 +154,17 @@ function build_element(x) {
 
 
 function button_filter(element) {
-  console.log(element.target.id);
-  console.log(element.target.innerHTML);
-  varr = element.target ; 
+  button_clicked = element.target ; 
   if( elem_active.length > 0) 
-    f1() ;
-  varr.style = "background-color:#1D6154; color:white";
-  elem_active.push(varr); 
-  console.log(varr);
+    change_button_color() ;
+  button_clicked.style = "background-color:#1D6154; color:white";
+  elem_active.push(button_clicked); 
   element.target.id == 0 ? build_work(all_work_elements) : filter_work(element.target.id); //passer un arg avec 
 };
 
-function f1(){
-  x = elem_active.pop() ; 
-  x.style = "" ;
+function change_button_color(){
+  button_active = elem_active.pop() ; 
+  button_active.style = "" ;
 }
 function filter_work(id) {
   build_work(all_work_elements.filter(item => item.categoryId == id));
@@ -185,7 +187,7 @@ function build_filter(all_filter_elements) {
     my_div.append(my_button);
 
   }
-  // ici a changer => nom de var a trouver et mettre ici 
+  
   portfolio_element = document.getElementById("portfolio");
   div_element = portfolio_element.querySelector("div");
   div_element.insertAdjacentElement('afterend', my_div);
@@ -199,6 +201,4 @@ function button_filter_out(button_container_element){
   var button_container_element = document.getElementById("button-container");
   if(button_container_element)
     display_off(button_container_element);
-  else
-    console.log("nothing to be seen there");
 } 
