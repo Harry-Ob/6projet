@@ -26,22 +26,17 @@ function form_verification(){
     event.preventDefault() ;
     user.email = email.value; 
     user.password = password.value ; 
-    password.value == "" || !verif_email.test(email.value) ? error2() : login(user) ;
+    password.value == "" || !verif_email.test(email.value) ? error() : login(user) ;
 
 }); 
 }
 
-function error2 () {
-    error();
-    
-}
+
 
 
 function login (user){
 
     const youser= JSON.stringify(user);
-    console.log(user);
-    console.log(youser);
     const data = { 
         method: "POST",
         mode:"cors", 
@@ -52,26 +47,22 @@ function login (user){
     fetch(api,data)
     .then(result =>{ 
         if (!result.ok){
-            throw new Error("Soucis mon reuf "); 
+            throw new Error("Vos identifiants sont incorrecte"); 
      }else
         return result.json();
     })
     .then(result2 =>{ 
-        console.log(result2);
         let user_id= result2.userId ; 
         let user_token = result2.token;
-        x = document.querySelector('nav ul li:nth-of-type(3)');
-        x.textContent = txt;         
-        console.log("vide ton local storage a la main"); 
-        console.log(result2); 
+        log_elem = document.querySelector('nav ul li:nth-of-type(3)');
+        log_elem.textContent = txt;         
         window.localStorage.setItem('user_id', user_id); 
         window.localStorage.setItem('user_token', user_token);
         window.location.href = './index.html' 
-        console.log("vide ton local storage a la main"); 
 
-})
+    })
     .catch(err => {
-        console.log(err);
+       error(); 
     })
 
 }
