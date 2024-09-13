@@ -6,6 +6,7 @@ let close_modale_element = document.getElementById("x-button");
 let c_close_modale_element = document.getElementById("xx-button");
 let valider_modale_element = document.getElementById("valider-button");
 let modale_add_element = document.getElementById("modale-add");
+let modale_add_bouton = document.getElementById("modale-button-add");
 let left_arrow = document.getElementById("previous-modale");
 let modale_gallery_element = gallery_div;
 let modale_gallery_img = document.getElementById("modale-show-main");
@@ -15,17 +16,16 @@ const input_file = document.getElementById("input-file");
 const input_title = document.getElementById("input-title");
 const input_category = document.getElementById("input-category");
 const max_file_size = 4 *1024 * 1024; 
-// a utiliser pour avoir notre preview de l'img
 const input_img = document.getElementById("input-img");
+const prev_img = document.getElementById("prev-img");
+const container_img_preview = document.querySelectorAll("#input-form .container-img-preview *");
 const input_img_data = {
-    // id: "",
     title: "",
     src: "",
     category_id: "",
     user_id: 0
 };
-const form_data = new FormData(); 
-// let file;
+let form_data = new FormData(); 
 
 // main fonction usage 
 modale();
@@ -36,40 +36,34 @@ function modale() {
     open_modale();
     close_modale();
     next_modale();
+    add_img_text();
     previous_modale();
     form_preview();
-    form_complete1(); 
+    form_complete(); 
 }
 
-function form_complete(img) {
-    
-    const form_add = document.getElementById("input-form");
-    form_add.addEventListener("submit",elem => {
+
+
+function add_img_text() {
+    modale_add_bouton.addEventListener("click", elem => {
         elem.preventDefault();
-        form_data.append("image",input_img_data.img);
-        form_data.append("category",parseInt(input_img_data.category_id));
-        form_data.append("title",input_title.value);
-        console.log(input_img_data,"eeh");
-        add_to_database(form_data);
-        
-    });
-    
-    // start2();
-    // when form is complete je lance add_to_database()
+        input_file.click();
+        form_preview();
+
+    })
 }
 
-function form_complete1(){
-    console.log(input_img_data);
+
+function form_complete(){
     if(input_img_data.img){
-        debbug
         const form_add = document.getElementById("input-form");
         form_add.addEventListener("submit",elem => {
             elem.preventDefault();
             form_data.append("img",input_img_data.img);
             form_data.append("title",input_title.value);
             form_data.append("categoryId",parseInt(input_img_data.category_id));
-            
             add_to_database(form_data);
+            
     });
     }
 }
@@ -81,54 +75,63 @@ function form_preview() {
     input_file.addEventListener("change", () => {
         let file ; 
         file = input_file.files[0];
-        // if file is good read it 
         if (file) {
             const reader = new FileReader();
             reader.onload = function (elem) {
                 input_img_data.src = elem.target.result;
+                input_img.src = elem.target.result; 
             };
             reader.readAsDataURL(file);
             f_name = file.name  ; 
             f_name = f_name.slice(0,f_name.lastIndexOf('.')) ;
             f_ext = file.name.slice((f_name.lastIndexOf(".")+1) ,file.name.length).toLowerCase();
-            input_title.value = f_name ; 
-            // when u know about the err do u tell something to the user ? 
+            input_title.value = f_name ;
+            display_img();
+            
             if ( input_img_data.category_id != "" && input_title.value != "" && ( f_ext == "png" || f_ext == "jpg") && file.size <= max_file_size ){
                 document.getElementById("submit-form-add-img").className = "submit-button" ; 
-                // form_complete(file);
-                // alert(petit truc a afficher si soucis) 
-                //  a deplacer 
             }else
-                console.log("erreur fichier non accepter"); 
+                // console.log("erreur fichier non accepter"); 
 
             input_img_data.img = file ; 
         }
     });
     input_category.addEventListener("change", (elem) => {
         elem.preventDefault();
-        // console.log(elem.target);
         input_img_data.category_id = elem.target.value;
         if ( input_img_data.category_id != "" && input_title.value != "" ){
             document.getElementById("submit-form-add-img").className = "submit-button" ; 
-            // form_complete(file);
-            // a deplacer car tu en place trop. 
         }
     });
-    form_complete(input_img_data);
-    
+    form_complete();   
+}
 
 
-    
-    
+function display_img(){
+    container_img_preview.forEach(elements => {
+        // console.log(elements.id); 
+        ( elements.id == "prev-img" || elements.id == "input-img" )  ? elements.classList.add("visible"): elements.classList.add("invisible"); 
+         });
+}
+
+function remove_display_img(){
+    container_img_preview.forEach(elements =>{
+        (elements.id == "prev-img" || elements.id == "input-img" ) ?elements.classList.remove("visible"): elements.classList.remove("invisible");
+    });
 }
 function category_modale(elem) {
-    for (i = 0; i < elem.length; i++) {
-        option_element = build_element("option");
-        option_element.value = elem[i].id;
-        option_element.text = elem[i].name;
-        input_category.append(option_element);
-    }
+    
+        for (i = 0; i < elem.length; i++) {
+            option_element = build_element("option");
+            option_element.value = elem[i].id;
+            option_element.text = elem[i].name;
+            input_category.append(option_element);
+        }
+
+   
+
 }
+
 // toto is called into script.js and build the gallery at the same time
 // that build_work is called
 function toto(img, figure, figcaption) {
@@ -152,7 +155,6 @@ function build_trash_icon_element() {
         remove_from_database(img.id);
         
     });
-    //  tu trouves ton id pour delete avec ton queryselector du parent de ton elem 
     span_element.append(i_element);
     return span_element;
 }
@@ -164,10 +166,7 @@ function show_modale(){
 
 function add_to_database(formdata) {
 
-    // id_img +=1; rajouter au bon endroit 
-    
-    // return console.log("DONE-add");
-    console.log(formdata);  
+    // console.log(formdata);  
     const user_token = window.localStorage.getItem("user_token");
     const url_database_add = url_database;
     const arg_author = "Bearer " + user_token; 
@@ -176,21 +175,18 @@ function add_to_database(formdata) {
         body: formdata,
         headers: {
             authorization: arg_author,
-            // "Content-type": "multipart/form-data",
         },
-        // mode: "cors",
-        // credential: "same-origin",
     }
-    // const formd = new FormData(formdata);
     fetch(url_database_add, request,)
     .then((response) => {
         if(!response.ok){throw new Error("Erreur, fichier non envoyer");}
         return response.json(); 
     })
-    // ici le fichier est bien envoyer donc je dois relancer la fonction pour build la bd
-    // dans la page mais aussi dans ma modale.
     .then((data) => {
-        console.log("Ta var est ici: ", data) ; 
+        modale_gallery_img.innerHTML="";
+        form_data = new FormData(); 
+        start();
+        show_modale();
 
     })
     .catch((error)=> {console.error("Erreur:",error)}); 
@@ -198,15 +194,6 @@ function add_to_database(formdata) {
 }
 
 function remove_from_database(id) {
-    // code non complet
-    // ici pour faire le remove avec un appel bien concluant on peut attendre de sortir ou de revenir en arriere 
-    // pour faire l'appel complet du fetch 
-    // tu delete 
-    // tu rebuild ta gallery 
-    // et ta modale 
-
-    // id_img -=1; a mettre au bon endroit 
-    // return console.log("DONE-delete");
     const user_token = window.localStorage.getItem("user_token");
     const url_database_delete = url_database + "/" + id;
     const arg_author = "Bearer " + user_token;
@@ -216,17 +203,19 @@ function remove_from_database(id) {
             authorization: arg_author,
             "Content-type": "application/json",
         },
-        mode: "cors",
-        credential: "same-origin",
     };
 
-    // verifier quoi faire une fois que l'image est supp de la BD
-    // regarder quel fonction appeler pour tout refaire 
-    // build_work et build_modale_visuals 
-    fetch(url_database_delete, request,)
+    fetch(url_database_delete, request)
     .then(() => {
-        modale(); 
-        console.log("here we are");
+        modale_gallery_element.querySelectorAll("img").forEach(element => {
+            if (element.id == id ) {
+                element.remove();
+                modale_gallery_img.innerHTML="";
+                start(); 
+                show_modale(); 
+            }
+                
+        });
     })
     .then()
     .catch((error)=> {console.error("Erreur:",error)}); 
@@ -236,22 +225,23 @@ function add_span_modale_gallery(elem, span) {
     elem.insertAdjacentElement('beforebegin', span);
 }
 
-// function modale_gallery() {
-//     build_modale_gallery();
-// }
 
-//  look why it works like that and not with named function in this case 
 function open_modale() {
     modifier_element.addEventListener("click", () => {
-        modale_container_element.style = "display:block";
-        modale_show_element.style = "display:flex";
+        show_modale();
     });
+    
 }
+function show_modale(){
+    modale_container_element.style = "display:block";
+    modale_show_element.style = "display:flex";
 
+}
 function close_modale() {
     close_modale_element.addEventListener("click", () => {
         modale_container_element.style = "";
         modale_show_element.style = "";
+        
     });
 
 }
@@ -264,12 +254,34 @@ function next_modale() {
     c_close_modale_element.addEventListener("click", () => {
         modale_container_element.style = "";
         modale_add_element.style = "";
+        reset_form();
     });
 }
 
+
+
 function previous_modale() {
-    left_arrow.addEventListener("click", () => {
-        modale_add_element.style = "";
-        modale_show_element.style = "display:flex";
+    left_arrow.addEventListener("click", (elem) => {
+        elem.preventDefault();
+        prev_modale(); 
     });
+       
+}
+
+function prev_modale(){
+    modale_add_element.style = "";
+    modale_show_element.style = "display:flex";
+    reset_form(); 
+
+
+}
+
+function reset_form(){
+    //  ajouter ici le code pour remettre le formulaire comme il est au depart en faisant l'inverse
+    // que ce que fais display_img() ; 
+    document.getElementById("submit-form-add-img").className = "submit-button-not-valid" ; 
+    input_title.value="";
+    input_img_data.category_id=""; 
+    input_category.value = "";
+    remove_display_img(); 
 }
