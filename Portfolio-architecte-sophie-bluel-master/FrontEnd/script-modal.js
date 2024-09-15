@@ -75,7 +75,7 @@ function add_img_text() {
 
 
 function form_complete() {
-    console.log(input_img_data.img);
+    // console.log(input_img_data.img);
     if (input_img_data.img) {
 
         const form_add = document.getElementById("input-form");
@@ -190,7 +190,7 @@ function show_modale() {
 function add_to_database(formdata) {
 
 
-    console.log(formdata);
+    // console.log(formdata);
     if (window.localStorage.getItem("user_token")) {
         const user_token = window.localStorage.getItem("user_token");
         const url_database_add = url_database;
