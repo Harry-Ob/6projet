@@ -32,13 +32,18 @@ element.style="display:none"
 // activer le button tous par defaut 
 start();
 
+// if the admin is one here is what i do 
 connexion() ? admin_elem_on() : admin_elem_off();
 
 function connexion (){
-  return window.localStorage.length > 0 ;
+  if (window.localStorage.getItem("user_token")) {
+    return true ; 
+  }
+  return false; 
+  // return window.localStorage.length > 0 ;
 }
 function test() {
-  if (window.localStorage.length > 0)
+  if (window.localStorage.getItem("user_token"))
     admin_elem();
 }
 
@@ -54,7 +59,7 @@ function admin_elem_on() {
   });
 
 
-  if (log_element.innerHTML == "login") {
+  if (log_element.innerHTML === "login") {
     if (window.localStorage.length > 0) {
       log_element.innerHTML = "logout";
       log_element.addEventListener("click", (event)=> {
@@ -67,6 +72,7 @@ function admin_elem_on() {
     log_element.addEventListener("click", (event) => {
       event.preventDefault();
       window.location.href = "login.html";
+      
     });
   }
 
@@ -75,7 +81,7 @@ function admin_elem_on() {
 //  soucis dans cette fonction a gerer 
 function log_() {
   tss =  log_element.innerHTML ;
-  tss == "login" ? log_in() : log_out() ;
+  tss === "login" ? log_in() : log_out() ;
 }
 
 function log_in() {
@@ -94,7 +100,8 @@ function log_out() {
 
 // all function and the code 
 
-
+// start function build the gallery on the main page 
+// the filters 
 async function start() {
   log_element.addEventListener("click", log_);
   try {
@@ -122,6 +129,7 @@ async function start() {
 }
 
 
+// toto function is to build at the same time the gallery in the modales 
 
 function build_work(work) {
   if (work_done == 1) { gallery_div.innerHTML = ""; }
