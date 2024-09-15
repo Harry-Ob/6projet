@@ -73,6 +73,7 @@ function admin_elem_on() {
       event.preventDefault();
       window.location.href = "login.html";
       
+      
     });
   }
 
