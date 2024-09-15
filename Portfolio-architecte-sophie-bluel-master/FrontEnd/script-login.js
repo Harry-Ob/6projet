@@ -26,7 +26,7 @@ function form_verification(){
     event.preventDefault() ;
     user.email = email.value; 
     user.password = password.value ; 
-    password.value == "" || !verif_email.test(email.value) ? error() : login(user) ;
+    password.value === "" || !verif_email.test(email.value) ? error() : login(user) ;
 
 }); 
 }
@@ -52,11 +52,11 @@ function login (user){
         return result.json();
     })
     .then(result2 =>{ 
-        let user_id= result2.userId ; 
+        // let user_id= result2.userId ; here u dont use it 
         let user_token = result2.token;
         log_elem = document.querySelector('nav ul li:nth-of-type(3)');
         log_elem.textContent = txt;         
-        window.localStorage.setItem('user_id', user_id); 
+        // window.localStorage.setItem('user_id', user_id); not needed
         window.localStorage.setItem('user_token', user_token);
         window.location.href = './index.html' 
 
