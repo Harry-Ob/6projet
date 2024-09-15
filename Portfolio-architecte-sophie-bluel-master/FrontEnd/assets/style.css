@@ -523,6 +523,8 @@ button {
 	align-items: center;
 	width: 17px;
 	height: 17px;
+	margin-left: 55px;
+    margin-top: 5px;
 }
 
 .fa-trash-can {
